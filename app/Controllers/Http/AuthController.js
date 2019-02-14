@@ -20,7 +20,7 @@ class AuthController {
   };
 
   async show(){
-    const users = await User.find()
+    const users = await User.all()
 
     return users;
   }

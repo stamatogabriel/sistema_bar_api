@@ -2,11 +2,11 @@ const Product = use("App/Models/Product");
 
 class ProductController {
 
-  async index({ request, response, view }) {}
+  async index({ request, response, view }) {
+    const products = await Product.all();
 
-
-  async create({ request, response, view }) {}
-
+    return products;
+  }
 
   async store({ request, response }) {
     const data = request.all();
@@ -16,17 +16,32 @@ class ProductController {
     return product;
   }
 
+  async show({ params, request, response, view }) {
+    const { description } = request.all();
 
-  async show({ params, request, response, view }) {}
+    const product = await Product.find(description);
+
+    return product;
+  }
+
+  async update({ params, request, response }) {
+    const { description, price } = request.all();
+
+    const product = await Product.findOrFail(params.id)
+
+    product.description = description;
+    product.price = price;
+
+    product.save();
+
+    return product;
+  }
 
 
-  async edit({ params, request, response, view }) {}
+  async destroy({ params, request, response }) {
+    await Product.findAndDelete(params.id);
 
-
-  async update({ params, request, response }) {}
-
-  
-  async destroy({ params, request, response }) {}
+  }
 }
 
 module.exports = ProductController;
