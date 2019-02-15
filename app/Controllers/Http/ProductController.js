@@ -1,4 +1,5 @@
 const Product = use("App/Models/Product");
+const Database = use('Database')
 
 class ProductController {
 
@@ -17,19 +18,26 @@ class ProductController {
   }
 
   async show({ params, request, response, view }) {
+    const product = await Product.findOrFail(params.id)
+
+    return product;
+  }
+
+
+  async search({ params, request, response, view }) {
     const { description } = request.all();
 
-    const product = await Product.find(description);
+    const product = await Database.from('products').where('description', 'like', `%${description}%`);
 
     return product;
   }
 
   async update({ params, request, response }) {
-    const { description, price } = request.all();
+    const { stock, price } = request.all();
 
     const product = await Product.findOrFail(params.id)
 
-    product.description = description;
+    product.stock = stock;
     product.price = price;
 
     product.save();
@@ -39,7 +47,9 @@ class ProductController {
 
 
   async destroy({ params, request, response }) {
-    await Product.findAndDelete(params.id);
+    const product = await Product.findOrFail(params.id);
+
+    await product.delete();
 
   }
 }

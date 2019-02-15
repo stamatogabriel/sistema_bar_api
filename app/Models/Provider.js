@@ -1,9 +1,17 @@
-'use strict'
+"use strict";
 
-/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use('Model')
+const SearchableKeys = use("App/Models/Traits/SearchableKeys");
+const Model = use("Model");
 
 class Provider extends Model {
+  static boot() {
+    super.boot();
+    this.addTrait("SearchableKeys");
+  }
+
+  contact_providers() {
+    return this.hasMany("App/Models/ContactProvider");
+  }
 }
 
-module.exports = Provider
+module.exports = Provider;
