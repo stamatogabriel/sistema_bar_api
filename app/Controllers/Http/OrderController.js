@@ -7,6 +7,7 @@ Pensar em mostrar o valor total da comanda (Order)
  - Será outro tipo de método? Sem ser os básicos? Provável
  - Cada ordem terá várias mesas, portanto deverei mostrar as mesas na comanda
  - Mostrar se a comanda está paga (criar método caixa)
+ - Não esquecer que, depois de lançado na ordem, retirar o produto do estoque
 */
 
 class OrderController {
