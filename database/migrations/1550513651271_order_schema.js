@@ -9,6 +9,7 @@ class OrderSchema extends Schema {
       table.increments()
       table.timestamps()
       table.integer('user_id')
+      table.boolean('paid').default(false)
     })
   }
 
