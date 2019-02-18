@@ -18,3 +18,7 @@ Route.group(() => {
  Route.group(() => {
   Route.resource("contact", "ContactProviderController").apiOnly();
  }).middleware("auth");
+
+ Route.group(() => {
+  Route.resource("provider", "ProviderController").apiOnly();
+ }).middleware("auth");

@@ -1,16 +1,14 @@
-const Provider = use('App/Models/Provider')
-const Database = use('Database')
-
+const Provider = use("App/Models/Provider");
+const Database = use("Database");
 
 class ProviderController {
-
-  async index ({ request, response, view }) {
-    const providers = await Provider.all()
+  async index({ request, response, view }) {
+    const providers = await Provider.all();
 
     return providers;
   }
 
-  async store ({ request, response }) {
+  async store({ request, response }) {
     const data = request.all();
 
     const provider = await Provider.create(data);
@@ -18,24 +16,28 @@ class ProviderController {
     return provider;
   }
 
-  async show ({ params, request, response, view }) {
-    const provider = await Provider.findOrFail(params.id)
+  async show({ params, request, response, view }) {
+    const provider = await Provider.findOrFail(params.id);
 
     return provider;
   }
 
-   async update ({ params, request, response }) {
-    const { cnpj,
-            ie,
-            razaoSocial,
-            nomeFantasia,
-            endereco,
-            num,
-            bairro,
-            cidade,
-            uf } = request.all();
+  async update({ params, request, response }) {
+    const {
+      cnpj,
+      ie,
+      razaoSocial,
+      nomeFantasia,
+      endereco,
+      num,
+      bairro,
+      cidade,
+      uf,
+      phone,
+      contact
+    } = request.all();
 
-    const provider = await Provider.findOrFail(params.id)
+    const provider = await Provider.findOrFail(params.id);
 
     provider.cnpj = cnpj;
     provider.ie = ie;
@@ -46,23 +48,19 @@ class ProviderController {
     provider.bairro = bairro;
     provider.cidade = cidade;
     provider.uf = uf;
-
+    provider.phone = phone;
+    provider.contact = contact;
 
     provider.save();
 
     return provider;
   }
 
-
-  async destroy ({ params, request, response }) {
+  async destroy({ params, request, response }) {
     const provider = await Provider.findOrFail(params.id);
 
     await provider.delete();
   }
-
-
 }
 
-
-
-module.exports = ProviderController
+module.exports = ProviderController;
