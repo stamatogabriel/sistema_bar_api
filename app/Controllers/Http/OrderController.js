@@ -27,7 +27,7 @@ class OrderController {
 
       return order;
 
-
+    }
 
   /**
    * Display a single order.
