@@ -4,12 +4,12 @@
 const Model = use('Model')
 
 class Order extends Model {
-  order_desks(){
-    return this.hasMany('App/Models/Desk')
+  product_orders(){
+    this.hasMany('App/Models/ProductOrder')
   }
 
-  order_products(){
-    return this.hasMany('App/Models/Product')
+  tickets(){
+    this.belongsTo('App/Models/Ticket')
   }
 }
 

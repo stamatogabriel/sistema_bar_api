@@ -15,6 +15,10 @@ class ProductSchema extends Schema {
         .integer("stock")
         .default(0)
         .unsigned();
+      table
+        .integer("minStock")
+        .default(0)
+        .unsigned();
       table.increments();
       table.timestamps();
     });

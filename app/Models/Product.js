@@ -4,8 +4,8 @@
 const Model = use("Model");
 
 class Product extends Model {
-  order_products(){
-    return this.hasMany('App/Models/OrderProduct')
+  product_orders(){
+    return this.hasMany('App/Models/ProductOrder')
   }
 }
 
