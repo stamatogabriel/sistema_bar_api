@@ -7,18 +7,18 @@ Route.get("/show", "AuthController.show").middleware("auth");
 
 Route.group(() => {
   Route.resource("products", "ProductController").apiOnly();
- }).middleware("auth");
+}).middleware("auth");
 
- Route.get("/product/search", "ProductController.search").middleware('auth');
+Route.get("/product/search", "ProductController.search").middleware("auth");
 
- Route.group(() => {
+Route.group(() => {
   Route.resource("provider", "ProviderController").apiOnly();
- }).middleware("auth");
+}).middleware("auth");
 
- Route.group(() => {
-  Route.resource("contact", "ContactProviderController").apiOnly();
- }).middleware("auth");
+Route.group(() => {
+  Route.resource("ticket", "TicketController").apiOnly();
+}).middleware("auth");
 
- Route.group(() => {
-  Route.resource("provider", "ProviderController").apiOnly();
- }).middleware("auth");
+Route.group(() => {
+  Route.resource("order", "OrderController").apiOnly();
+}).middleware("auth");

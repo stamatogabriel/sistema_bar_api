@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Ticket extends Model {
   orders(){
-    this.hasMany('App/Models/Order')
+    return this.hasMany('App/Models/Order')
   }
 }
 
