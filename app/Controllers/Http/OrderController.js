@@ -1,58 +1,46 @@
-"use strict";
-const Order = use("App/Models/Order");
-const Database = use('Database');
-const Product = use('App/Models/Product');
-const Ticket = use('App/Models/Ticket');
-const ProductOrder = use('App/Models/ProductOrder');
+'use strict'
+
+const Order = use('App/Models/Order')
+/*
+Pensar em mostrar o valor total da comanda (Order)
+
+ - Vou precisar percorrer a tabela OrderProduct somando os totais dos produtos e salvar o resultado em uma variavel
+ - Criação das tuplas da OrderDesk e Product Desk devem ficar no store do Order?? Provável!!!
+ - Será outro tipo de método? Sem ser os básicos? Provável
+ - Cada ordem terá várias mesas, portanto deverei mostrar as mesas na comanda
+ - Mostrar se a comanda está paga (criar método caixa)
+ - Não esquecer que, depois de lançado na ordem, retirar o produto do estoque
+*/
 
 class OrderController {
-  async index({ request, response, view }) {
-    const orders = await Order.all();
 
-    return orders;
+  async index({ request, response, view }) {
+
   }
+
 
   async store({ request, response }) {
-    const data = request.all();
+    const data = request.all()
 
-    const order = await Order.create(data);
+    const order = await Order.create(data)
 
-    return order;
+    return order
   }
 
 
-  async show({ params, request, response, view }) {}
+  async show({ params, request, response, view }) {
+  }
 
-  /**
-   * Render a form to update an existing order.
-   * GET orders/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({ params, request, response, view }) {}
 
-  /**
-   * Update order details.
-   * PUT or PATCH orders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update({ params, request, response }) {}
+  async update({ params, request, response }) {
+  }
 
-  /**
-   * Delete a order with id.
-   * DELETE orders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({ params, request, response }) {}
+
+  async destroy({ params, request, response }) {
+    const order = await Order.findOrFail(params.id);
+
+    await order.delete();
+  }
 }
 
-module.exports = OrderController;
+module.exports = OrderController
