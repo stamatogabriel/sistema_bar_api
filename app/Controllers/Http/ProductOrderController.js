@@ -5,12 +5,12 @@
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
 /**
- * Resourceful controller for interacting with orders
+ * Resourceful controller for interacting with productorders
  */
-class OrderController {
+class ProductOrderController {
   /**
-   * Show a list of all orders.
-   * GET orders
+   * Show a list of all productorders.
+   * GET productorders
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -21,8 +21,8 @@ class OrderController {
   }
 
   /**
-   * Render a form to be used for creating a new order.
-   * GET orders/create
+   * Render a form to be used for creating a new productorder.
+   * GET productorders/create
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -33,8 +33,8 @@ class OrderController {
   }
 
   /**
-   * Create/save a new order.
-   * POST orders
+   * Create/save a new productorder.
+   * POST productorders
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -44,8 +44,8 @@ class OrderController {
   }
 
   /**
-   * Display a single order.
-   * GET orders/:id
+   * Display a single productorder.
+   * GET productorders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -56,8 +56,8 @@ class OrderController {
   }
 
   /**
-   * Render a form to update an existing order.
-   * GET orders/:id/edit
+   * Render a form to update an existing productorder.
+   * GET productorders/:id/edit
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -68,8 +68,8 @@ class OrderController {
   }
 
   /**
-   * Update order details.
-   * PUT or PATCH orders/:id
+   * Update productorder details.
+   * PUT or PATCH productorders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -79,8 +79,8 @@ class OrderController {
   }
 
   /**
-   * Delete a order with id.
-   * DELETE orders/:id
+   * Delete a productorder with id.
+   * DELETE productorders/:id
    *
    * @param {object} ctx
    * @param {Request} ctx.request
@@ -90,4 +90,4 @@ class OrderController {
   }
 }
 
-module.exports = OrderController
+module.exports = ProductOrderController

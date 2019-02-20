@@ -4,10 +4,10 @@
 const Schema = use('Schema')
 
 class OrderSchema extends Schema {
-  up() {
-    this.create("orders", table => {
-      table.increments();
-      table.timestamps();
+  up () {
+    this.create('orders', (table) => {
+      table.increments()
+      table.timestamps()
       table
         .integer("desk")
         .unsigned()
@@ -18,7 +18,7 @@ class OrderSchema extends Schema {
         .inTable("tickets")
         .unsigned();
       table.boolean("close").default(false);
-    });
+    })
   }
 
   down () {

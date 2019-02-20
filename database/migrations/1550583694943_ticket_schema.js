@@ -8,11 +8,11 @@ class TicketSchema extends Schema {
   up() {
     this.create("tickets", table => {
       table.increments();
-      table.timestamps();
       table
         .integer("numComanda")
         .unsigned()
         .unique();
+        table.timestamps();
     });
   }
 
