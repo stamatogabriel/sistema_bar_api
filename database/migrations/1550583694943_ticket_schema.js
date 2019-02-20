@@ -7,12 +7,12 @@ const Schema = use("Schema");
 class TicketSchema extends Schema {
   up() {
     this.create("tickets", table => {
-      table.increments()
-      table.timestamps()
+      table.increments();
       table
         .integer("numComanda")
         .unsigned()
-        .unique()
+        .unique();
+        table.timestamps();
     });
   }
 

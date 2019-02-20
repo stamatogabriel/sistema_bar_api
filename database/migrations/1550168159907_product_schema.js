@@ -10,17 +10,17 @@ class ProductSchema extends Schema {
       table
         .float("price")
         .notNullable()
-        .unsigned()
+        .unsigned();
       table
         .integer("stock")
         .default(0)
-        .unsigned()
+        .unsigned();
       table
         .integer("minStock")
         .default(0)
-        .unsigned()
-      table.increments()
-      table.timestamps()
+        .unsigned();
+      table.increments();
+      table.timestamps();
     });
   }
 
