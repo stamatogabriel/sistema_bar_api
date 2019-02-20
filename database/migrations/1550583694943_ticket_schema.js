@@ -13,6 +13,7 @@ class TicketSchema extends Schema {
         .unsigned()
         .unique();
         table.timestamps();
+        table.boolean('inUse').default(false)
     });
   }
 

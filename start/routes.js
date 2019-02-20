@@ -22,3 +22,9 @@ Route.group(() => {
 Route.group(() => {
   Route.resource("order", "OrderController").apiOnly();
 }).middleware("auth");
+
+Route.group(() => {
+  Route.resource("request", "ProductOrderController").apiOnly();
+}).middleware("auth");
+
+Route.post("/order/request/:id", "ProductOrderController.store").middleware("auth");

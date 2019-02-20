@@ -1,93 +1,53 @@
-'use strict'
+"use strict";
+const ProductOrder = use("App/Models/ProductOrder");
+const Order = use("App/Models/Order");
+const Product = use("App/Models/Product");
+const Database = use("Database");
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with productorders
- */
 class ProductOrderController {
-  /**
-   * Show a list of all productorders.
-   * GET productorders
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
+  async index({ request, response, view }) {}
+
+  async store({ request, response, params }) {
+    const order = await Order.findOrFail(params.id);
+    const data = request.only(["product_id", "qnt"]);
+    const product = await Product.find(data.product_id);
+
+    const productOrder = await ProductOrder.create({
+      ...data,
+      order_id: order.id,
+      total: product.price * data.qnt
+    });
+
+    await Database.table("products")
+      .where("id", product.id)
+      .update("stock", product.stock - data.qnt);
+
+    return productOrder;
   }
 
-  /**
-   * Render a form to be used for creating a new productorder.
-   * GET productorders/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+  async show({ params, request, response, view }) {}
+
+  async update({ params, request, response }) {
+    const { qnt } = request.all();
+
+    const order = await ProductOrder.findOrFail(params.id);
+
+    const product = await Product.find(order.product_id);
+
+    order.qnt += qnt;
+
+    order.total = order.qnt * product.price;
+
+    await Database.table("products")
+      .where("id", product.id)
+      .update("stock", product.stock - qnt);
+
+    order.save();
+
+    return order;
   }
 
-  /**
-   * Create/save a new productorder.
-   * POST productorders
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response }) {
-  }
-
-  /**
-   * Display a single productorder.
-   * GET productorders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {
-  }
-
-  /**
-   * Render a form to update an existing productorder.
-   * GET productorders/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
-  }
-
-  /**
-   * Update productorder details.
-   * PUT or PATCH productorders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update ({ params, request, response }) {
-  }
-
-  /**
-   * Delete a productorder with id.
-   * DELETE productorders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {
-  }
+  async destroy({ params, request, response }) {}
 }
 
-module.exports = ProductOrderController
+module.exports = ProductOrderController;

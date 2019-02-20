@@ -1,93 +1,66 @@
-'use strict'
+"use strict";
+const Order = use("App/Models/Order");
+const Database = use("Database");
+const Ticket = use("App/Models/Ticket");
 
-/** @typedef {import('@adonisjs/framework/src/Request')} Request */
-/** @typedef {import('@adonisjs/framework/src/Response')} Response */
-/** @typedef {import('@adonisjs/framework/src/View')} View */
-
-/**
- * Resourceful controller for interacting with orders
- */
 class OrderController {
-  /**
-   * Show a list of all orders.
-   * GET orders
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
+  async index({ request, response, view }) {
+    const orders = Order.query()
+      .with("tickets")
+      .with("product_orders")
+      .with("products")
+      .fetch();
+
+    return orders;
   }
 
-  /**
-   * Render a form to be used for creating a new order.
-   * GET orders/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
+  async store({ request, response }) {
+    const data = request.all();
+
+    const ticket = await Ticket.find(data.ticket_id);
+
+    if (ticket.inUse === true) {
+      return response.send("Comanda em uso");
+    }
+
+    const order = await Order.create(data);
+
+    await Database.table("tickets")
+      .where("id", ticket.id)
+      .update("inUse", true);
+
+    return order;
   }
 
-  /**
-   * Create/save a new order.
-   * POST orders
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store ({ request, response }) {
+  async show({ params, request, response, view }) {
+    const order = await Order.findOrFail(params.id);
+
+    return order;
   }
 
-  /**
-   * Display a single order.
-   * GET orders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {
+  async update({ params, request, response }) {
+    const { desk } = request.all();
+
+    const order = await Order.findOrFail(params.id);
+
+    order.desk = desk;
+
+    order.save();
+
+    return order;
   }
 
-  /**
-   * Render a form to update an existing order.
-   * GET orders/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {
-  }
+  async destroy({ params, request, response }) {
+    const order = await Order.findOrFail(params.id);
+    const ticket = await Ticket.find(order.ticket_id);
+    await Database.table("tickets")
+      .where("id", ticket.id)
+      .update("inUse", false);
 
-  /**
-   * Update order details.
-   * PUT or PATCH orders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update ({ params, request, response }) {
-  }
+    order.delete();
 
-  /**
-   * Delete a order with id.
-   * DELETE orders/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy ({ params, request, response }) {
+    return response.send("Ordem Deletada");
   }
 }
 
-module.exports = OrderController
+module.exports = OrderController;

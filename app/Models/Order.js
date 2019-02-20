@@ -9,7 +9,11 @@ class Order extends Model {
   }
 
   product_orders(){
-    return this.hasMany('App/Models')
+    return this.hasMany('App/Models/ProductOrder')
+  }
+
+  products(){
+    return this.manyThrough('App/Models/ProductOrder', 'products')
   }
 }
 

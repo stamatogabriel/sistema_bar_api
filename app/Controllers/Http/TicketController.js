@@ -27,6 +27,9 @@ class TicketController {
 
     await ticket.delete();
   }
+
 }
+
+
 
 module.exports = TicketController;
