@@ -25,7 +25,11 @@ class ProductOrderController {
     return productOrder;
   }
 
-  async show({ params, request, response, view }) {}
+  async show({ params, request, response, view }) {
+    const op = await ProductOrder.findOrFail(params.id)
+
+    return op;
+  }
 
   async update({ params, request, response }) {
     const { qnt } = request.all();
@@ -47,7 +51,20 @@ class ProductOrderController {
     return order;
   }
 
-  async destroy({ params, request, response }) {}
+  async destroy({ params, request, response }) {
+
+    const op = await ProductOrder.findOrFail(params.id)
+
+    const product = await Product.find(op.product_id)
+
+    await Database.table("products")
+      .where("id", product.id)
+      .update("stock", product.stock + op.qnt );
+
+    op.delete();
+
+    return response.send('Produto deletado')
+  }
 }
 
 module.exports = ProductOrderController;

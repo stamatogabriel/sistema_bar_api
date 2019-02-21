@@ -19,6 +19,7 @@ class User extends Model {
         userInstance.password = await Hash.make(userInstance.password);
       }
     });
+    
   }
 
   /**
