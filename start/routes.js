@@ -1,12 +1,18 @@
 const Route = use("Route");
 
-Route.post("/register", "AuthController.register");
 Route.post("/auth", "AuthController.authenticate");
 
-Route.get("/show", "AuthController.show").middleware("auth");
-Route.put('/change_password', 'AuthController.changePassword').middleware("auth");
-Route.put('/reset_password/:id', 'AuthController.resetPassword').middleware("auth");
-Route.get("/logout", "AuthController.logout").middleware("auth");
+Route.get('/comanda/:id', 'OrderController.show')
+
+Route.post("/register", "AuthController.register");
+Route.group(() => {
+ // Route.post("/register", "AuthController.register");
+  Route.get("/show", "AuthController.show");
+  Route.put("/change_password", "AuthController.changePassword");
+  Route.put("/reset_password/:id", "AuthController.resetPassword");
+  Route.put("/logout", "AuthController.logout");
+  Route.delete("/delete/:id", "AuthController.destroy");
+}).middleware("auth");
 
 Route.group(() => {
   Route.resource("products", "ProductController").apiOnly();
@@ -23,11 +29,15 @@ Route.group(() => {
 }).middleware("auth");
 
 Route.group(() => {
-  Route.resource("order", "OrderController").apiOnly();
+  Route.resource("order", "OrderController")
+    .apiOnly()
+    .except("show");
 }).middleware("auth");
 
 Route.group(() => {
   Route.resource("request", "ProductOrderController").apiOnly();
 }).middleware("auth");
 
-Route.post("/order/request/:id", "ProductOrderController.store").middleware("auth");
+Route.post("/order/request/:id", "ProductOrderController.store").middleware(
+  "auth"
+);

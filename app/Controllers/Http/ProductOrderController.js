@@ -22,11 +22,20 @@ class ProductOrderController {
       .where("id", product.id)
       .update("stock", product.stock - data.qnt);
 
+    const info = await Database.from("product_orders")
+      .sum("total")
+      .where("order_id", order.id);
+    const totalComanda = info[0];
+
+    await Database.table("orders")
+      .where("id", order.id)
+      .update("total_comanda", totalComanda.sum);
+
     return productOrder;
   }
 
   async show({ params, request, response, view }) {
-    const op = await ProductOrder.findOrFail(params.id)
+    const op = await ProductOrder.findOrFail(params.id);
 
     return op;
   }
@@ -46,24 +55,33 @@ class ProductOrderController {
       .where("id", product.id)
       .update("stock", product.stock - qnt);
 
-    order.save();
+    const info = await Database.from("product_orders")
+      .sum("total")
+      .where("order_id", order.id);
+      
+    const totalComanda = info[0];
+
+    await Database.table("orders")
+      .where("id", order.id)
+      .update("total_comanda", totalComanda.sum);
+
+    await order.save();
 
     return order;
   }
 
   async destroy({ params, request, response }) {
+    const op = await ProductOrder.findOrFail(params.id);
 
-    const op = await ProductOrder.findOrFail(params.id)
-
-    const product = await Product.find(op.product_id)
+    const product = await Product.find(op.product_id);
 
     await Database.table("products")
       .where("id", product.id)
-      .update("stock", product.stock + op.qnt );
+      .update("stock", product.stock + op.qnt);
 
-    op.delete();
+    await op.delete();
 
-    return response.send('Produto deletado')
+    return response.send("Produto deletado");
   }
 }
 

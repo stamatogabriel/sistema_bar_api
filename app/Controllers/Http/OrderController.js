@@ -2,6 +2,7 @@
 const Order = use("App/Models/Order");
 const Database = use("Database");
 const Ticket = use("App/Models/Ticket");
+const Product = use('App/Models/Product')
 
 class OrderController {
   async index({ request, response, view }) {
@@ -56,12 +57,28 @@ class OrderController {
 
   async destroy({ params, request, response }) {
     const order = await Order.findOrFail(params.id);
+
     const ticket = await Ticket.find(order.ticket_id);
+
     await Database.table("tickets")
       .where("id", ticket.id)
       .update("inUse", false);
 
-    order.delete();
+    const reuse = await Database.table('product_orders').where('order_id', order.id)
+
+    reuse.map(reuse => {
+      const prod = reuse.qnt;
+
+      const product = await Product.find(reuse.product_id);
+
+      console.log(reuse.product_id)
+     /* await Database.table("products")
+      .where("id", product.id)
+      .update("stock", product.stock + prod);*/
+    })
+
+
+  //  await order.delete();
 
     return response.send("Ordem Deletada");
   }
