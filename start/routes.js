@@ -4,7 +4,9 @@ Route.post("/register", "AuthController.register");
 Route.post("/auth", "AuthController.authenticate");
 
 Route.get("/show", "AuthController.show").middleware("auth");
-Route.put("/changepass/:id", "AuthController.update").middleware("auth");
+Route.put('/change_password', 'AuthController.changePassword').middleware("auth");
+Route.put('/reset_password/:id', 'AuthController.resetPassword').middleware("auth");
+Route.get("/logout", "AuthController.logout").middleware("auth");
 
 Route.group(() => {
   Route.resource("products", "ProductController").apiOnly();

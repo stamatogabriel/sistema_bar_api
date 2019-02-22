@@ -1,5 +1,8 @@
 "use strict";
 const User = use("App/Models/User");
+const Hash = use('Hash');
+const Token = use('App/Models/Token')
+const Database = use('Database')
 
 class AuthController {
   async register({ request }) {
@@ -24,19 +27,61 @@ class AuthController {
     return users;
   }
 
-  async update({ auth, request, response, params }) {
-    const user = await User.findOrFail(params.id);
-    if (auth.id === params.id) {
-      return response.send("Não autorizado");
+  async changePassword({ request, auth, response }) {
+
+    const user = auth.current.user
+
+    const verifyPassword = await Hash.verify(
+      request.input('password'),
+      user.password
+    )
+
+    if (!verifyPassword) {
+      return response.status(400).json({
+        status: 'error',
+        message: 'Current password could not be verified! Please try again.'
+      })
     }
-    const { password } = request.all();
 
-    user.password = password;
+    user.password = await request.input('newPassword')
+    await user.save()
 
-    user.save();
-
-    return user;
+    return response.json({
+      status: 'success',
+      message: 'Password updated!'
+    })
   }
+
+  async resetPassword({ request, auth, response, params }) {
+
+    const user = await User.findOrFail(params.id)
+    const manager = auth.current.user
+
+    if (!manager.manager === true) {
+      return response.status(400).json({
+        status: 'error',
+        message: 'Não autorizado. Comunique ao seu gerente'
+      })
+    }
+
+    user.password = await request.input('newPassword')
+    await user.save()
+
+    return response.json({
+      status: 'success',
+      message: 'Password updated!'
+    })
+  }
+
+  async logout({ auth, request }) {
+
+    const user = auth.current.user
+
+    await Database.table("tokens")
+      .where("user_id", user.id)
+      .update("is_revoked", true);
+      
+    }
 }
 
 module.exports = AuthController;
