@@ -2,7 +2,7 @@
 const Order = use("App/Models/Order");
 const Database = use("Database");
 const Ticket = use("App/Models/Ticket");
-const Product = use('App/Models/Product')
+const Product = use("App/Models/Product");
 
 class OrderController {
   async index({ request, response, view }) {
@@ -64,23 +64,62 @@ class OrderController {
       .where("id", ticket.id)
       .update("inUse", false);
 
-    const reuse = await Database.table('product_orders').where('order_id', order.id)
+    const reuse = await Database.table("product_orders").where(
+      "order_id",
+      order.id
+    );
+    console.log(reuse);
 
-    reuse.map(reuse => {
-      const prod = reuse.qnt;
+    reuse.map(async item => {
+      const qnt = item.qnt;
+      const product = await Product.find(item.product_id);
 
-      const product = await Product.find(reuse.product_id);
+      await Database.table("products")
+        .where("id", item.product_id)
+        .update("stock", product.stock + qnt);
+    });
 
-      console.log(reuse.product_id)
-     /* await Database.table("products")
-      .where("id", product.id)
-      .update("stock", product.stock + prod);*/
-    })
-
-
-  //  await order.delete();
+    await order.delete();
 
     return response.send("Ordem Deletada");
+  }
+
+  async payment({ params, request, response }) {
+    const order = await Order.find(params.id);
+
+    const { formPay } = request.only(["formPay"]);
+
+    let { money } = request.only(["money"]);
+
+    let troco;
+
+    switch (formPay) {
+      case "cash":
+        troco = money - order.total_comanda;
+        if (troco < 0) {
+          return response.json({
+            status: error,
+            message: `Ainda faltam ${troco}`
+          });
+          break;
+        }
+
+      case "card":
+        money = order.total_comanda;
+        break;
+    }
+
+    await Database.table("orders")
+      .where("id", order.id)
+      .update("close", true);
+
+    await Database.table("tickets")
+      .where("id", order.ticket_id)
+      .update("inUse", false);
+
+    await order.save();
+
+    return troco;
   }
 }
 
