@@ -7,6 +7,7 @@ class Product extends Model {
   product_orders(){
     return this.hasMany('App/Models/ProductOrder')
   }
+
 }
 
 module.exports = Product;
