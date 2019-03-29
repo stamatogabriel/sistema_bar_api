@@ -33,12 +33,13 @@ class ProductController {
   }
 
   async update({ params, request, response }) {
-    const { stock, price } = request.all();
+    const { stock, price, minStock } = request.all();
 
     const product = await Product.findOrFail(params.id)
 
     product.stock = stock;
     product.price = price;
+    product.minStock = minStock;
 
     product.save();
 
