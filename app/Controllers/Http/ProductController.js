@@ -37,20 +37,8 @@ class ProductController {
 
     const product = await Product.findOrFail(params.id)
 
-    if (stock === ''){
-      stock = product.stock;
-    }
-
-    if (price === ''){
-      price = product.price;
-    }
-
-    if (minStock === ''){
-      stock = product.minStock;
-    }
-
-    product.stock = stock;
     product.price = price;
+    product.stock = stock;
     product.minStock = minStock;
 
     product.save();
