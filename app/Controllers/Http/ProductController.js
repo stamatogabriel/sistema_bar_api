@@ -39,7 +39,7 @@ class ProductController {
 
     product.price = price;
     product.stock = stock;
-    //product.minStock = minStock;
+    product.minStock = minStock;
 
     product.save();
 
