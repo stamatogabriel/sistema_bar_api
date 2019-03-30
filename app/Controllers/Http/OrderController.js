@@ -18,7 +18,7 @@ class OrderController {
   async store({ request, response }) {
     const data = request.all();
 
-    const ticket = await Database.from('tickets').where('numComanda', `%${data.ticket}%`);
+    const ticket = await Database.from('tickets').where('numComanda', 'like', `%${data.ticket}%`);
     //const ticket = await Ticket.find(data.ticket_id);
 
     if (ticket.inUse === true) {
