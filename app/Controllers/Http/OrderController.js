@@ -18,13 +18,14 @@ class OrderController {
   async store({ request, response }) {
     const data = request.all();
 
-    const ticket = await Ticket.find(data.ticket_id);
+    const ticket = await Database.from('tickets').where('numComanda', 'like', `%${data.ticket}%`);
+    //const ticket = await Ticket.find(data.ticket_id);
 
     if (ticket.inUse === true) {
       return response.send("Comanda em uso");
     }
 
-    const order = await Order.create(data);
+    const order = await Order.create({ticket_id: data.ticket.id, ...data});
 
     await Database.table("tickets")
       .where("id", ticket.id)
