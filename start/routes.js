@@ -2,8 +2,6 @@ const Route = use("Route");
 
 Route.post("/auth", "AuthController.authenticate");
 
-Route.get("/comanda/:id", "OrderController.show");
-
 Route.post("/register", "AuthController.register");
 Route.group(() => {
   // Route.post("/register", "AuthController.register");
@@ -31,7 +29,6 @@ Route.group(() => {
 Route.group(() => {
   Route.resource("order", "OrderController")
     .apiOnly()
-    .except("show");
 }).middleware("auth");
 
 Route.group(() => {
