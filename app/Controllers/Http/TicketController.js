@@ -17,7 +17,8 @@ class TicketController {
   }
 
   async show({ params, request, response, view }) {
-    const ticket = await Ticket.findOrFail(params.id);
+    const ticket = await Ticket.query()
+    .where('id', params.id)
 
     return ticket;
   }
