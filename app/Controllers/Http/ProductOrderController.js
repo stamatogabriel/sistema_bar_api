@@ -9,7 +9,7 @@ class ProductOrderController {
 
   async store({ request, response, params }) {
     const order = await Order.findOrFail(params.id);
-    const data = request.only({product_id, qnt});
+    const data = request.only(product_id, qnt);
     const product = await Product.find(data.product_id);
 
     const productOrder = await ProductOrder.create({
