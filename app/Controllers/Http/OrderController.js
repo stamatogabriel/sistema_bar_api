@@ -34,7 +34,8 @@ class OrderController {
   }
 
   async show({ params, request, response, view }) {
-    const order = await Order.findOrFail(params.id)
+    const order = await Order.query()
+      .where('id', params.id)
       .with("tickets")
       .with("product_orders")
       .with("products")
