@@ -84,11 +84,11 @@ class ProductOrderController {
       .where("order_id", op.order_id);
     const totalComanda = info[0];
 
+    await op.delete();
+
     await Database.table("orders")
       .where("id", op.order_id)
       .update("total_comanda", totalComanda.sum);
-
-    await op.delete();
 
     return response.send("Produto deletado");
   }
