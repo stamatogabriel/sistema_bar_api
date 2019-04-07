@@ -79,16 +79,17 @@ class ProductOrderController {
       .where("id", product.id)
       .update("stock", product.stock + op.qnt);
 
-    const info = await Database.from("product_orders")
+      await op.delete();
+
+      const info = await Database.from("product_orders")
       .sum("total")
       .where("order_id", op.order_id);
 
     const totalComanda = info[0];
-    
+
     await Database.table("orders")
       .where("id", op.order_id)
       .update("total_comanda", totalComanda.sum);
-    await op.delete();
 
     return response.send("Produto deletado");
   }
