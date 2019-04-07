@@ -5,7 +5,7 @@ const Product = use("App/Models/Product");
 const Database = use("Database");
 
 class ProductOrderController {
-  async index({ request, response, view }) {}
+  async index({ request, response, view }) { }
 
   async store({ request, response, params }) {
     const order = await Order.findOrFail(params.id);
@@ -78,6 +78,15 @@ class ProductOrderController {
     await Database.table("products")
       .where("id", product.id)
       .update("stock", product.stock + op.qnt);
+
+    const info = await Database.from("product_orders")
+      .sum("total")
+      .where("order_id", op.order_id);
+    const totalComanda = info[0];
+
+    await Database.table("orders")
+      .where("id", op.order_id)
+      .update("total_comanda", totalComanda.sum);
 
     await op.delete();
 
