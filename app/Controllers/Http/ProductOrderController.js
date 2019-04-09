@@ -47,7 +47,7 @@ class ProductOrderController {
 
     const product = await Product.find(order.product_id);
 
-    order.qnt += qnt;
+    order.qnt = qnt;
 
     order.total = order.qnt * product.price;
 
@@ -58,7 +58,7 @@ class ProductOrderController {
     const info = await Database.from("product_orders")
       .sum("total")
       .where("order_id", order.id);
-      
+
     const totalComanda = info[0];
 
     await Database.table("orders")
