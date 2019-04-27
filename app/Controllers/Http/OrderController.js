@@ -120,7 +120,7 @@ class OrderController {
 
     await order.save();
 
-    return troco;
+    return response.send(troco);
   }
 }
 
