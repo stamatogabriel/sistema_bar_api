@@ -101,6 +101,7 @@ class OrderController {
   async showOrder ({params, request}){
     const order = await Order.query()
     .where('ticket_id', params.id)
+    .where('close', false)
     .with("tickets")
     .with("product_orders")
     .with("products")
