@@ -69,7 +69,6 @@ class OrderController {
       "order_id",
       order.id
     );
-    console.log(reuse);
 
     reuse.map(async item => {
       const qnt = item.qnt;
@@ -98,6 +97,18 @@ class OrderController {
 
     await order.save();
   }
+
+  async showOrder ({params, request}){
+    const order = await Order.query()
+    .where('ticket_id', params.id)
+    .with("tickets")
+    .with("product_orders")
+    .with("products")
+    .fetch();
+
+  return order;
+  }
+
 }
 
 module.exports = OrderController;
