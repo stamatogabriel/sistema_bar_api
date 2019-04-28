@@ -39,4 +39,4 @@ Route.post("/order/request/:id", "ProductOrderController.store").middleware(
   "auth"
 );
 
-Route.post("/pay/:id", "OrderController.payment").middleware("auth");
+Route.put("/pay/:id", "OrderController.payment").middleware("auth");
