@@ -97,8 +97,6 @@ class OrderController {
       .update("inUse", false);
 
     await order.save();
-
-    return response.send(troco);
   }
 }
 
