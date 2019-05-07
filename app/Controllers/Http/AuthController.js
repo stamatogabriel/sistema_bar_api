@@ -43,6 +43,12 @@ class AuthController {
     return users;
   }
 
+  async getUser ({ request, auth, response }) {
+    const user = auth.current.user;
+
+    return user;
+  }
+
   async changePassword({ request, auth, response }) {
     const user = auth.current.user;
 

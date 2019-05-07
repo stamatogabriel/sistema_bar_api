@@ -6,6 +6,7 @@ Route.post("/register", "AuthController.register");
 Route.group(() => {
   // Route.post("/register", "AuthController.register");
   Route.get("/show", "AuthController.show");
+  Route.get('/get_user', "AuthControlle.getUser");
   Route.put("/change_password", "AuthController.changePassword");
   Route.put("/reset_password/:id", "AuthController.resetPassword");
   Route.put("/logout", "AuthController.logout");
