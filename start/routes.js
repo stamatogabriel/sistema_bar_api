@@ -1,4 +1,5 @@
 const Route = use("Route");
+const authManager = require('../app/Middleware/authManager');
 
 Route.post("/auth", "AuthController.authenticate");
 
@@ -15,7 +16,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.resource("products", "ProductController").apiOnly();
-}).middleware("auth");
+}).middleware("auth", authManager);
 
 Route.get("/product/search", "ProductController.search").middleware("auth");
 
