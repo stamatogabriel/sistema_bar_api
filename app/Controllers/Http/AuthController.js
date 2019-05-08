@@ -51,9 +51,10 @@ class AuthController {
 
   async changePassword({ request, auth, response }) {
     const user = auth.current.user;
+    const { password, newPassword } = request.all();
 
     const verifyPassword = await Hash.verify(
-      request.input("password"),
+      password,
       user.password
     );
 
@@ -64,7 +65,7 @@ class AuthController {
       });
     }
 
-    user.password = await request.input("newPassword");
+    user.password = newPassword;
     await user.save();
 
     return response.json({
