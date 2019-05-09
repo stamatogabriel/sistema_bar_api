@@ -17,7 +17,9 @@ class OrderSchema extends Schema {
         .integer("ticket_id")
         .references("id")
         .inTable("tickets")
-        .unsigned();
+        .unsigned()
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE')
       table.float("total_comanda").unsigned();
       table.boolean("close").default(false);
     });

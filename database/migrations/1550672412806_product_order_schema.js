@@ -21,7 +21,9 @@ class ProductOrderSchema extends Schema {
         .references("id")
         .inTable("products")
         .notNullable()
-        .unsigned();
+        .unsigned()
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE')
       table
         .integer("qnt")
         .notNullable()

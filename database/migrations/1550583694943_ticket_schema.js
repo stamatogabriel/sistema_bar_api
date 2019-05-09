@@ -11,9 +11,12 @@ class TicketSchema extends Schema {
       table
         .integer("numComanda")
         .unsigned()
-        .unique();
+        .unique()
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE')
         table.timestamps();
         table.boolean('inUse').default(false)
+
     });
   }
 
