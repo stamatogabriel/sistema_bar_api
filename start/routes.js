@@ -16,10 +16,8 @@ Route.group(() => {
 }).middleware(["auth", "authManager"]);
 
 Route.group(() => {
-  Route.resource("products", "ProductController").apiOnly().except("index");
-}).middleware(["auth", "authManager"]);
-
-Route.get("products", "Productcontroller.index").middleware(["auth"]);
+  Route.resource("products", "ProductController").apiOnly();
+}).middleware(["auth"]);
 
 Route.get("/product/search", "ProductController.search").middleware("auth");
 
