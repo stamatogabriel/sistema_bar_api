@@ -8,8 +8,9 @@ Route.put("/change_password", "AuthController.changePassword");
 Route.get('/get_user', "AuthController.getUser");
 }).middleware("auth");
 
-Route.group(() => {
   Route.post("/register", "AuthController.register");
+Route.group(() => {
+ // Route.post("/register", "AuthController.register");
   Route.get("/show", "AuthController.show");
   Route.put("/reset_password/:id", "AuthController.resetPassword");
   Route.delete("/delete/:id", "AuthController.destroy");
